@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using TestMessageHub.Converters;
 
 namespace TestMessageHub.Models
 {
     /// <summary>
     /// Message base class
     /// </summary>
+    [JsonConverter(typeof(JSONMessageConverter))]
     public abstract class MessageBase
     {
         /// <summary>

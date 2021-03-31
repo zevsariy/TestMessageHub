@@ -11,6 +11,7 @@ namespace TestMessageHub
         {
             using (ApplicationContext db = new ApplicationContext())
             {
+                // create test DATA
                 DBMessageEntity message001 = new DBMessageEntity
                 {
                     Title = Guid.NewGuid().ToString(),
@@ -40,9 +41,9 @@ namespace TestMessageHub
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            });
     }
 }

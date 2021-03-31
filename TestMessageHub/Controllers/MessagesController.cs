@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using TestMessageHub.Converters;
+using TestMessageHub.Interfaces;
 using TestMessageHub.Models;
 
 namespace TestMessageHub.Controllers
@@ -12,43 +12,41 @@ namespace TestMessageHub.Controllers
     [Route("[controller]")]
     public class MessagesController : ControllerBase
     {
-        private readonly ILogger<MessagesController> _logger;
-
         private readonly MessageConverter _messageConverter;
 
+        private readonly IDBMessagesService _DBMessagesService;
+
         public MessagesController(
-            ILogger<MessagesController> logger,
-            IMapper mapper)
+            IMapper mapper,
+            IDBMessagesService DBMessagesService)
         {
-            _logger = logger;
             _messageConverter = new MessageConverter(mapper);
+            _DBMessagesService = DBMessagesService;
         }
 
         [HttpGet]
-        public ActionResult GetMessagesForCompanyByNameAndDateTimeRange(
+        public async Task<ActionResult> GetMessagesForCompanyByNameAndDateTimeRange(
             [FromQuery] string companyName,
             [FromQuery] DateTime fromDate,
-            [FromQuery] DateTime toDate)
+            [FromQuery] DateTime toDate,
+            [FromQuery] bool read)
         {
-            Companies.Validate(companyName);
+            var messages = await _DBMessagesService.GetMessages(companyName, fromDate, toDate, read);
 
-            using ApplicationContext db = new ApplicationContext();
-            var messages = db.Messages.Where(
-                (message) => message.To == companyName
-                && (message.SendDate >= fromDate || message.SendDate <= toDate)
-            );
-            return Ok(messages);
+            return companyName.ToUpper() switch
+            {
+                Companies.Adidas => Ok(_messageConverter.PrepareCompanyMessages<AdidasMessage>(messages)),
+                Companies.Nike => Ok(_messageConverter.PrepareCompanyMessages<NikeMessage>(messages)),
+                Companies.Puma => Ok(_messageConverter.PrepareCompanyMessages<PumaMessage>(messages)),
+                _ => BadRequest(string.Format("Can't resolve company name: {0}", companyName)),
+            };
         }
 
         [HttpPost]
-        public ActionResult SendMessage(
+        public async Task<ActionResult> SendMessage(
             [FromBody] MessageBase message)
         {
-            using ApplicationContext db = new ApplicationContext();
-            db.Messages.Add(
-                _messageConverter.ConvertToDBMessageEntity(message)
-            );
-            db.SaveChanges();
+            await _DBMessagesService.SaveMessage(_messageConverter.ConvertToDBMessageEntity(message));
             return Ok();
         }
     }

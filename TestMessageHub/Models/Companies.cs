@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TestMessageHub.Models
+﻿namespace TestMessageHub.Models
 {
     /// <summary>
     /// Companies names
@@ -21,18 +19,5 @@ namespace TestMessageHub.Models
         /// Puma company name
         /// </summary>
         public const string Puma = "PUMA";
-
-        public static void Validate(string companyName)
-        {
-            switch (companyName.ToUpper())
-            {
-                case Adidas:
-                case Nike:
-                case Puma:
-                    return;
-                default:
-                    throw new Exception(string.Format("Unknown company name: {0}", companyName));
-            };
-        }
     }
 }

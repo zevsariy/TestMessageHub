@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TestMessageHub.Converters;
 using TestMessageHub.Mappings;
 using TestMessageHub.Models;
@@ -133,6 +134,118 @@ namespace TestMessageHub.Tests
             Assert.IsNotNull(pumaMessage.Body);
             Assert.AreEqual(message.Title, pumaMessage.Title);
             Assert.AreEqual(message.Message, pumaMessage.Body);
+        }
+
+        [TestMethod]
+        public void PrepareCompanyMessageToAdidasMessage()
+        {
+            var messages = new List<DBMessageEntity>
+            {
+                new DBMessageEntity()
+                {
+                    From = Companies.Nike,
+                    To = Companies.Adidas,
+                    Title = Guid.NewGuid().ToString(),
+                    Message = Guid.NewGuid().ToString()
+                }
+            };
+
+            var adidasMessage = _messageConverter.PrepareCompanyMessages<AdidasMessage>(messages)
+                .FirstOrDefault();
+
+            var inputMessage = messages.Single();
+
+            Assert.IsNotNull(adidasMessage.Header);
+            Assert.IsNotNull(adidasMessage.Content);
+            Assert.AreEqual(inputMessage.Title, adidasMessage.Header);
+            Assert.AreEqual(inputMessage.Message, adidasMessage.Content);
+        }
+
+        [TestMethod]
+        public void PrepareCompanyMessageToNikeMessage()
+        {
+            var messages = new List<DBMessageEntity>
+            {
+                new DBMessageEntity()
+                {
+                    From = Companies.Puma,
+                    To = Companies.Nike,
+                    Title = Guid.NewGuid().ToString(),
+                    Message = Guid.NewGuid().ToString()
+                }
+            };
+
+            var nikeMessage = _messageConverter.PrepareCompanyMessages<NikeMessage>(messages)
+                .FirstOrDefault();
+
+            var inputMessage = messages.Single();
+
+            Assert.IsNotNull(nikeMessage.Caption);
+            Assert.IsNotNull(nikeMessage.Message);
+            Assert.AreEqual(inputMessage.Title, nikeMessage.Caption);
+            Assert.AreEqual(inputMessage.Message, nikeMessage.Message);
+        }
+
+        [TestMethod]
+        public void PrepareCompanyMessageToPumaMessage()
+        {
+            var messages = new List<DBMessageEntity>
+            {
+                new DBMessageEntity()
+                {
+                    From = Companies.Nike,
+                    To = Companies.Puma,
+                    Title = Guid.NewGuid().ToString(),
+                    Message = Guid.NewGuid().ToString()
+                }
+            };
+
+            var pumaMessage = _messageConverter.PrepareCompanyMessages<PumaMessage>(messages)
+                .FirstOrDefault();
+
+            var inputMessage = messages.Single();
+
+            Assert.IsNotNull(pumaMessage.Title);
+            Assert.IsNotNull(pumaMessage.Body);
+            Assert.AreEqual(inputMessage.Title, pumaMessage.Title);
+            Assert.AreEqual(inputMessage.Message, pumaMessage.Body);
+        }
+
+        [TestMethod]
+        public void PrepareCompanyMessagesToPumaMessages()
+        {
+            var messages = new List<DBMessageEntity>
+            {
+                new DBMessageEntity()
+                {
+                    From = Companies.Nike,
+                    To = Companies.Puma,
+                    Title = Guid.NewGuid().ToString(),
+                    Message = Guid.NewGuid().ToString()
+                },
+                new DBMessageEntity()
+                {
+                    From = Companies.Nike,
+                    To = Companies.Puma,
+                    Title = Guid.NewGuid().ToString(),
+                    Message = Guid.NewGuid().ToString()
+                },
+                new DBMessageEntity()
+                {
+                    From = Companies.Nike,
+                    To = Companies.Puma,
+                    Title = Guid.NewGuid().ToString(),
+                    Message = Guid.NewGuid().ToString()
+                },
+            };
+
+            var pumaMessages = _messageConverter.PrepareCompanyMessages<PumaMessage>(messages);
+
+            Assert.AreEqual(3, pumaMessages.Count);
+            Assert.IsFalse(pumaMessages.Any(message => string.IsNullOrEmpty(message.Title)));
+            Assert.IsFalse(pumaMessages.Any(message => string.IsNullOrEmpty(message.Body)));
+            Assert.IsFalse(pumaMessages.Any(message => string.IsNullOrEmpty(message.From)));
+            Assert.IsFalse(pumaMessages.Any(message => string.IsNullOrEmpty(message.To)));
         }
     }
 }
