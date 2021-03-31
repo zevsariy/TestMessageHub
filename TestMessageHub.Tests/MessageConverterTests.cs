@@ -6,6 +6,7 @@ using System.Linq;
 using TestMessageHub.Converters;
 using TestMessageHub.Mappings;
 using TestMessageHub.Models;
+using TestMessageHub.Models.Const;
 
 namespace TestMessageHub.Tests
 {

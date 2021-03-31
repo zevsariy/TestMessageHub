@@ -47,6 +47,9 @@ namespace TestMessageHub
 
             // Add MessageBase validator
             services.AddTransient<IValidator<MessageBase>, MessageBaseValidator>();
+            services.AddTransient<IValidator<AdidasMessage>, MessageBaseValidator>();
+            services.AddTransient<IValidator<NikeMessage>, MessageBaseValidator>();
+            services.AddTransient<IValidator<PumaMessage>, MessageBaseValidator>();
 
             // Add messages DB service
             services.AddTransient<IDBMessagesService, DBMessagesService>();

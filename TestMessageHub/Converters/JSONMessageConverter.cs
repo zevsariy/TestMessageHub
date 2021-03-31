@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using TestMessageHub.Models;
+using TestMessageHub.Models.Const;
 
 namespace TestMessageHub.Converters
 {
@@ -47,7 +48,8 @@ namespace TestMessageHub.Converters
 						return target;
 					}
 				default:
-					throw new JsonReaderException($"Message from company '{companyFromName}' is unknown.");
+					throw new JsonReaderException(
+						string.Format(ErrorMessages.MissingMessageType, companyFromName));
 			}
 		}
 

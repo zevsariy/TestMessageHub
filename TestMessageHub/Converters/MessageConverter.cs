@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TestMessageHub.Models;
+using TestMessageHub.Models.Const;
 
 namespace TestMessageHub.Converters
 {

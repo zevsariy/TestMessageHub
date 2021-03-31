@@ -1,4 +1,4 @@
-﻿namespace TestMessageHub.Models
+﻿namespace TestMessageHub.Models.Const
 {
     /// <summary>
     /// Companies names

@@ -2,6 +2,9 @@
 
 namespace TestMessageHub.Models
 {
+    /// <summary>
+    /// Model of message in DB representation
+    /// </summary>
     public class DBMessageEntity
     {
         /// <summary>

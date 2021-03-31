@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using TestMessageHub.Converters;
 using TestMessageHub.Interfaces;
 using TestMessageHub.Models;
+using TestMessageHub.Models.Const;
 
 namespace TestMessageHub.Controllers
 {
@@ -38,7 +39,7 @@ namespace TestMessageHub.Controllers
                 Companies.Adidas => Ok(_messageConverter.PrepareCompanyMessages<AdidasMessage>(messages)),
                 Companies.Nike => Ok(_messageConverter.PrepareCompanyMessages<NikeMessage>(messages)),
                 Companies.Puma => Ok(_messageConverter.PrepareCompanyMessages<PumaMessage>(messages)),
-                _ => BadRequest(string.Format("Can't resolve company name: {0}", companyName)),
+                _ => BadRequest(string.Format(ErrorMessages.CantResolveCompanyName, companyName)),
             };
         }
 
