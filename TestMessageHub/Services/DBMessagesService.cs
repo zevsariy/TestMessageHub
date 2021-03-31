@@ -16,11 +16,19 @@ namespace TestMessageHub.Services
             DateTime? toDate,
             bool? read)
         {
+            if (fromDate == null) fromDate = DateTime.UtcNow.AddDays(-7);
+            if (toDate == null) toDate = DateTime.UtcNow;
+
             using ApplicationContext db = new ApplicationContext();
-            var messages = await db.Messages.Where(
+            var query = db.Messages.Where(
                 (message) => message.To == companyName
                 && (message.SendDate >= fromDate || message.SendDate <= toDate)
-            ).ToListAsync();
+            );
+
+            if (read != null)
+                query = query.Where((message) => message.Read == read);
+
+            var messages = await query.ToListAsync();
             return messages;
         }
 

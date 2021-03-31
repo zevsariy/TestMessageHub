@@ -27,9 +27,9 @@ namespace TestMessageHub.Controllers
         [HttpGet]
         public async Task<ActionResult> GetMessagesForCompanyByNameAndDateTimeRange(
             [FromQuery] string companyName,
-            [FromQuery] DateTime fromDate,
-            [FromQuery] DateTime toDate,
-            [FromQuery] bool read)
+            [FromQuery] DateTime? fromDate,
+            [FromQuery] DateTime? toDate,
+            [FromQuery] bool? read)
         {
             var messages = await _DBMessagesService.GetMessages(companyName, fromDate, toDate, read);
 

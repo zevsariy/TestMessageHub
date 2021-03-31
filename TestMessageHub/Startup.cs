@@ -11,6 +11,8 @@ using TestMessageHub.Interfaces;
 using TestMessageHub.Models;
 using TestMessageHub.Services;
 using TestMessageHub.Validations;
+using Microsoft.OpenApi.Models;
+using System;
 
 namespace TestMessageHub
 {
@@ -48,11 +50,39 @@ namespace TestMessageHub
 
             // Add messages DB service
             services.AddTransient<IDBMessagesService, DBMessagesService>();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Test Message HUB",
+                    Description = "Simple test message hub on ASP.NET Core Web API. It can be used for ADIDAS, PUMA and NIKE companies.",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Tkachenko Sergey",
+                        Email = "zevsariy.app@gmail.com",
+                        Url = new Uri("https://vk.com/tkachenko_s_y")
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "You can copy this project without any notification.",
+                        Url = new Uri("https://github.com/zevsariy"),
+                    }
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Test Message HUB API V1");
+                c.RoutePrefix = string.Empty;
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
