@@ -31,16 +31,26 @@ namespace TestMessageHub.Services
             if (toDate == null) toDate = DateTime.UtcNow;
 
             using ApplicationContext db = new ApplicationContext();
-            var query = db.Messages.Where(
-                (message) => message.To == companyName
-                && (message.SendDate >= fromDate || message.SendDate <= toDate)
-            );
 
-            if (read != null)
-                query = query.Where((message) => message.Read == read);
-
-            var messages = await query.ToListAsync();
-            return messages;
+            if (read == null)
+            {
+                var query = db.Messages.Where(
+                    (message) => message.To == companyName
+                    && (message.SendDate >= fromDate && message.SendDate <= toDate)
+                );
+                var messages = await query.ToListAsync();
+                return messages;
+            }
+            else
+            {
+                var query = db.Messages.Where(
+                    (message) => message.To == companyName
+                    && (message.SendDate >= fromDate && message.SendDate <= toDate)
+                    && message.Read == read
+                );
+                var messages = await query.ToListAsync();
+                return messages;
+            }
         }
 
         /// <summary>
