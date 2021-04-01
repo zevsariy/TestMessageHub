@@ -31,8 +31,7 @@ namespace TestMessageHub.Controllers
         /// Get messages for company and date range with messages status check
         /// </summary>
         /// <param name="companyName">Company name</param>
-        /// <param name="fromDate">Start date range</param>
-        /// <param name="toDate">End date range</param>
+        /// <param name="dateRange">Date range</param>
         /// <param name="read">Message read status</param>
         /// <response code="200">Request processed successfully</response>
 		/// <response code="400">Bad request received. Additional info will be in a body</response>
