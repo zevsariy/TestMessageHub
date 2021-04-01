@@ -47,7 +47,6 @@ namespace TestMessageHub.Services
                 );
                 var messages = await query.ToListAsync();
                 return messages;
-                
             }
             else
             {
