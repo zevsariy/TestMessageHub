@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TestMessageHub.Models;
 using TestMessageHub.Models.Const;
+using TestMessageHub.Models.DTO;
 
 namespace TestMessageHub.Converters
 {
@@ -25,15 +26,20 @@ namespace TestMessageHub.Converters
         /// </summary>
         /// <param name="message">Message</param>
         /// <returns>DBMessageEntity</returns>
-        public DBMessageEntity ConvertToDBMessageEntity(MessageBase message)
+        public DBMessageEntity ConvertToDBMessageEntity(MessageBaseDTO message)
         {
-            return message?.From?.ToUpper() switch
-            {
-                Companies.Adidas => _mapper.Map<DBMessageEntity>(message as AdidasMessage),
-                Companies.Nike => _mapper.Map<DBMessageEntity>(message as NikeMessage),
-                Companies.Puma => _mapper.Map<DBMessageEntity>(message as PumaMessage),
-                _ => throw new Exception(string.Format(CompanyErrorMessage, message.From))
-            };
+            var companyName = message?.From?.ToUpper();
+
+            if (companyName == Companies.Adidas)
+                return _mapper.Map<DBMessageEntity>(message as AdidasMessageDTO);
+
+            if (companyName == Companies.Nike)
+                return _mapper.Map<DBMessageEntity>(message as NikeMessageDTO);
+
+            if (companyName == Companies.Puma)
+                return _mapper.Map<DBMessageEntity>(message as PumaMessageDTO);
+
+            throw new Exception(string.Format(CompanyErrorMessage, message.From));
         }
 
         /// <summary>
@@ -41,9 +47,9 @@ namespace TestMessageHub.Converters
         /// </summary>
         /// <param name="message">DBMessageEntity</param>
         /// <returns>Adidas message</returns>
-        public AdidasMessage ConvertToAdidasMessage(DBMessageEntity message)
+        public AdidasMessageDTO ConvertToAdidasMessage(DBMessageEntity message)
         {
-            return _mapper.Map<AdidasMessage>(message);
+            return _mapper.Map<AdidasMessageDTO>(message);
         }
 
         /// <summary>
@@ -51,9 +57,9 @@ namespace TestMessageHub.Converters
         /// </summary>
         /// <param name="message">DBMessageEntity</param>
         /// <returns>Nike message</returns>
-        public NikeMessage ConvertToNikeMessage(DBMessageEntity message)
+        public NikeMessageDTO ConvertToNikeMessage(DBMessageEntity message)
         {
-            return _mapper.Map<NikeMessage>(message);
+            return _mapper.Map<NikeMessageDTO>(message);
         }
 
         /// <summary>
@@ -61,9 +67,9 @@ namespace TestMessageHub.Converters
         /// </summary>
         /// <param name="message">DBMessageEntity</param>
         /// <returns>Puma message</returns>
-        public PumaMessage ConvertToPumaMessage(DBMessageEntity message)
+        public PumaMessageDTO ConvertToPumaMessage(DBMessageEntity message)
         {
-            return _mapper.Map<PumaMessage>(message);
+            return _mapper.Map<PumaMessageDTO>(message);
         }
 
         /// <summary>

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TestMessageHub.Converters;
 using TestMessageHub.Interfaces;
-using TestMessageHub.Models;
+using TestMessageHub.Models.DTO;
 using TestMessageHub.Models.Const;
 using static System.Net.Mime.MediaTypeNames;
+using TestMessageHub.Models;
 
 namespace TestMessageHub.Controllers
 {
@@ -40,19 +40,22 @@ namespace TestMessageHub.Controllers
         [HttpGet]
         public async Task<ActionResult> GetMessagesForCompanyByNameAndDateTimeRange(
             [FromQuery] string companyName,
-            [FromQuery] DateTime? fromDate,
-            [FromQuery] DateTime? toDate,
+            [FromQuery] DateRange dateRange,
             [FromQuery] bool? read)
         {
-            var messages = await _DBMessagesService.GetMessages(companyName, fromDate, toDate, read);
+            var messages = await _DBMessagesService.GetMessages(companyName, dateRange, read);
+            companyName = companyName.ToUpper();
 
-            return companyName.ToUpper() switch
-            {
-                Companies.Adidas => Ok(_messageConverter.PrepareCompanyMessages<AdidasMessage>(messages)),
-                Companies.Nike => Ok(_messageConverter.PrepareCompanyMessages<NikeMessage>(messages)),
-                Companies.Puma => Ok(_messageConverter.PrepareCompanyMessages<PumaMessage>(messages)),
-                _ => BadRequest(string.Format(ErrorMessages.CantResolveCompanyName, companyName)),
-            };
+            if (companyName == Companies.Adidas) 
+                return Ok(_messageConverter.PrepareCompanyMessages<AdidasMessageDTO>(messages));
+
+            if (companyName == Companies.Nike)
+                return Ok(_messageConverter.PrepareCompanyMessages<NikeMessageDTO>(messages));
+
+            if (companyName == Companies.Puma)
+                return Ok(_messageConverter.PrepareCompanyMessages<PumaMessageDTO>(messages));
+
+            return BadRequest(string.Format(ErrorMessages.CantResolveCompanyName, companyName));
         }
 
         /// <summary>
@@ -64,7 +67,7 @@ namespace TestMessageHub.Controllers
         /// <returns>Ok result</returns>
         [HttpPost]
         public async Task<ActionResult> SendMessage(
-            [FromBody] MessageBase message)
+            [FromBody] MessageBaseDTO message)
         {
             await _DBMessagesService.SaveMessage(_messageConverter.ConvertToDBMessageEntity(message));
             return Ok();

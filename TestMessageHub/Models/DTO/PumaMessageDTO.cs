@@ -1,9 +1,9 @@
-﻿namespace TestMessageHub.Models
+﻿namespace TestMessageHub.Models.DTO
 {
     /// <summary>
     /// Model of message from Puma company
     /// </summary>
-    public class PumaMessage : MessageBase
+    public class PumaMessageDTO : MessageBaseDTO
     {
         /// <summary>
         /// Message title

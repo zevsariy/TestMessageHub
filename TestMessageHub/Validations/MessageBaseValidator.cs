@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
-using TestMessageHub.Models;
+using TestMessageHub.Models.DTO;
 using TestMessageHub.Models.Const;
 
 namespace TestMessageHub.Validations
 {
-    public class MessageBaseValidator : AbstractValidator<MessageBase>
+    public class MessageBaseValidator : AbstractValidator<MessageBaseDTO>
 	{
 		public MessageBaseValidator()
 		{

@@ -2,8 +2,8 @@
 using Newtonsoft.Json;
 using System;
 using TestMessageHub.Converters;
-using TestMessageHub.Models;
 using TestMessageHub.Models.Const;
+using TestMessageHub.Models.DTO;
 
 namespace TestMessageHub.Tests
 {
@@ -22,7 +22,7 @@ namespace TestMessageHub.Tests
         public void CanConvert_AdidasMessage_False()
         {
             // arrange
-            Type type = typeof(AdidasMessage);
+            Type type = typeof(AdidasMessageDTO);
             // act
             bool canConvert = _jsonMessageConverter.CanConvert(type);
             // assert
@@ -33,7 +33,7 @@ namespace TestMessageHub.Tests
         public void CanConvert_NikeMessage_False()
         {
             // arrange
-            Type type = typeof(NikeMessage);
+            Type type = typeof(NikeMessageDTO);
             // act
             bool canConvert = _jsonMessageConverter.CanConvert(type);
             // assert
@@ -44,7 +44,7 @@ namespace TestMessageHub.Tests
         public void CanConvert_PumaMessage_False()
         {
             // arrange
-            Type type = typeof(PumaMessage);
+            Type type = typeof(PumaMessageDTO);
             // act
             bool canConvert = _jsonMessageConverter.CanConvert(type);
             // assert
@@ -55,7 +55,7 @@ namespace TestMessageHub.Tests
         public void CanConvert_MessageBase_True()
         {
             // arrange
-            Type type = typeof(MessageBase);
+            Type type = typeof(MessageBaseDTO);
             // act
             bool canConvert = _jsonMessageConverter.CanConvert(type);
             // assert
@@ -69,7 +69,7 @@ namespace TestMessageHub.Tests
             var jsonSettings = new JsonSerializerSettings();
             jsonSettings.Converters.Add(_jsonMessageConverter);
 
-            var adidasMessage = new AdidasMessage
+            var adidasMessage = new AdidasMessageDTO
             {
                 Header = Guid.NewGuid().ToString(),
                 Content = Guid.NewGuid().ToString(),
@@ -81,12 +81,12 @@ namespace TestMessageHub.Tests
             string stringOfAdidasMessage = JsonConvert.SerializeObject(adidasMessage, jsonSettings);
 
             // act
-            var messageBase = JsonConvert.DeserializeObject<MessageBase>(stringOfAdidasMessage, jsonSettings);
+            var messageBase = JsonConvert.DeserializeObject<MessageBaseDTO>(stringOfAdidasMessage, jsonSettings);
 
             // assert
             Assert.AreEqual(Companies.Adidas, messageBase.From);
 
-            var deserializedAdidasMessage = (AdidasMessage)messageBase;
+            var deserializedAdidasMessage = (AdidasMessageDTO)messageBase;
             Assert.AreEqual(adidasMessage.From, deserializedAdidasMessage.From);
             Assert.AreEqual(adidasMessage.To, deserializedAdidasMessage.To);
             Assert.AreEqual(adidasMessage.Header, deserializedAdidasMessage.Header);
@@ -102,7 +102,7 @@ namespace TestMessageHub.Tests
             var jsonSettings = new JsonSerializerSettings();
             jsonSettings.Converters.Add(_jsonMessageConverter);
 
-            var nikeMessage = new NikeMessage
+            var nikeMessage = new NikeMessageDTO
             {
                 Caption = Guid.NewGuid().ToString(),
                 Message = Guid.NewGuid().ToString(),
@@ -114,12 +114,12 @@ namespace TestMessageHub.Tests
             string stringOfNikeMessage = JsonConvert.SerializeObject(nikeMessage, jsonSettings);
 
             // act
-            var messageBase = JsonConvert.DeserializeObject<MessageBase>(stringOfNikeMessage, jsonSettings);
+            var messageBase = JsonConvert.DeserializeObject<MessageBaseDTO>(stringOfNikeMessage, jsonSettings);
 
             // assert
             Assert.AreEqual(Companies.Nike, messageBase.From);
 
-            var deserializedNikeMessage = (NikeMessage)messageBase;
+            var deserializedNikeMessage = (NikeMessageDTO)messageBase;
             Assert.AreEqual(nikeMessage.From, deserializedNikeMessage.From);
             Assert.AreEqual(nikeMessage.To, deserializedNikeMessage.To);
             Assert.AreEqual(nikeMessage.Caption, deserializedNikeMessage.Caption);
@@ -135,7 +135,7 @@ namespace TestMessageHub.Tests
             var jsonSettings = new JsonSerializerSettings();
             jsonSettings.Converters.Add(_jsonMessageConverter);
 
-            var pumaMessage = new PumaMessage
+            var pumaMessage = new PumaMessageDTO
             {
                 Title = Guid.NewGuid().ToString(),
                 Body = Guid.NewGuid().ToString(),
@@ -147,12 +147,12 @@ namespace TestMessageHub.Tests
             string stringOfPumaMessage = JsonConvert.SerializeObject(pumaMessage, jsonSettings);
 
             // act
-            var messageBase = JsonConvert.DeserializeObject<MessageBase>(stringOfPumaMessage, jsonSettings);
+            var messageBase = JsonConvert.DeserializeObject<MessageBaseDTO>(stringOfPumaMessage, jsonSettings);
 
             // assert
             Assert.AreEqual(Companies.Puma, messageBase.From);
 
-            var deserializedPumaMessage = (PumaMessage)messageBase;
+            var deserializedPumaMessage = (PumaMessageDTO)messageBase;
             Assert.AreEqual(pumaMessage.From, deserializedPumaMessage.From);
             Assert.AreEqual(pumaMessage.To, deserializedPumaMessage.To);
             Assert.AreEqual(pumaMessage.Title, deserializedPumaMessage.Title);

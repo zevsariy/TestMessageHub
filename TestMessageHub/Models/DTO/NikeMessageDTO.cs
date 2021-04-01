@@ -1,9 +1,9 @@
-﻿namespace TestMessageHub.Models
+﻿namespace TestMessageHub.Models.DTO
 {
     /// <summary>
     /// Model of message from Nike company
     /// </summary>
-    public class NikeMessage : MessageBase
+    public class NikeMessageDTO : MessageBaseDTO
     {
         /// <summary>
         /// Message title

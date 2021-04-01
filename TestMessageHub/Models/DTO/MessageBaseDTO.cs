@@ -2,13 +2,13 @@
 using System;
 using TestMessageHub.Converters;
 
-namespace TestMessageHub.Models
+namespace TestMessageHub.Models.DTO
 {
     /// <summary>
     /// Message base class
     /// </summary>
     [JsonConverter(typeof(JSONMessageConverter))]
-    public abstract class MessageBase
+    public abstract class MessageBaseDTO
     {
         /// <summary>
         /// Company sender name

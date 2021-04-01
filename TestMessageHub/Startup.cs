@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using TestMessageHub.Converters;
 using TestMessageHub.Interfaces;
-using TestMessageHub.Models;
+using TestMessageHub.Models.DTO;
 using TestMessageHub.Services;
 using TestMessageHub.Validations;
 using Microsoft.OpenApi.Models;
@@ -47,10 +47,10 @@ namespace TestMessageHub
                 .AddFluentValidation(fv => fv.RunDefaultMvcValidationAfterFluentValidationExecutes = false);
 
             // Add MessageBase validator
-            services.AddTransient<IValidator<MessageBase>, MessageBaseValidator>();
-            services.AddTransient<IValidator<AdidasMessage>, MessageBaseValidator>();
-            services.AddTransient<IValidator<NikeMessage>, MessageBaseValidator>();
-            services.AddTransient<IValidator<PumaMessage>, MessageBaseValidator>();
+            services.AddTransient<IValidator<MessageBaseDTO>, MessageBaseValidator>();
+            services.AddTransient<IValidator<AdidasMessageDTO>, MessageBaseValidator>();
+            services.AddTransient<IValidator<NikeMessageDTO>, MessageBaseValidator>();
+            services.AddTransient<IValidator<PumaMessageDTO>, MessageBaseValidator>();
 
             // Add messages DB service
             services.AddTransient<IDBMessagesService, DBMessagesService>();

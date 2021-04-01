@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TestMessageHub.Models;
 
@@ -14,14 +13,12 @@ namespace TestMessageHub.Interfaces
         /// Get messages by params
         /// </summary>
         /// <param name="companyName">Messages owner company name.</param>
-        /// <param name="fromDate">Start date of messages range.</param>
-        /// <param name="toDate">End date of messages range.</param>
+        /// <param name="dateRange">DateTime range.</param>
         /// <param name="read">Status of messages.</param>
         /// <returns>List of DBMessageEntity</returns>
         Task<List<DBMessageEntity>> GetMessages(
             string companyName,
-            DateTime? fromDate,
-            DateTime? toDate,
+            DateRange dateRange,
             bool? read);
 
         /// <summary>

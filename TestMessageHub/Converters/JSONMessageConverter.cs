@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using TestMessageHub.Models;
 using TestMessageHub.Models.Const;
+using TestMessageHub.Models.DTO;
 
 namespace TestMessageHub.Converters
 {
@@ -27,36 +27,35 @@ namespace TestMessageHub.Converters
 			var companyFromName = obj.GetValue("from", StringComparison.OrdinalIgnoreCase)?
 				.Value<string>()?.ToUpper() ?? "undefined";
 
-            switch (companyFromName)
-			{
-				case Companies.Adidas:
-					{
-						var target = new AdidasMessage();
-						serializer.Populate(obj.CreateReader(), target);
-						return target;
-					}
-				case Companies.Nike:
-					{
-						var target = new NikeMessage();
-						serializer.Populate(obj.CreateReader(), target);
-						return target;
-					}
-				case Companies.Puma:
-					{
-						var target = new PumaMessage();
-						serializer.Populate(obj.CreateReader(), target);
-						return target;
-					}
-				default:
-					throw new JsonReaderException(
-						string.Format(ErrorMessages.MissingMessageType, companyFromName));
+			if(companyFromName == Companies.Adidas)
+            {
+				var target = new AdidasMessageDTO();
+				serializer.Populate(obj.CreateReader(), target);
+				return target;
 			}
+
+			if (companyFromName == Companies.Nike)
+			{
+				var target = new NikeMessageDTO();
+				serializer.Populate(obj.CreateReader(), target);
+				return target;
+			}
+
+			if (companyFromName == Companies.Puma)
+			{
+				var target = new PumaMessageDTO();
+				serializer.Populate(obj.CreateReader(), target);
+				return target;
+			}
+
+			throw new JsonReaderException(
+				string.Format(ErrorMessages.MissingMessageType, companyFromName));
 		}
 
 
 		public override bool CanConvert(Type objectType)
 		{
-			return typeof(MessageBase) == objectType;
+			return typeof(MessageBaseDTO) == objectType;
 		}
 	}
 }

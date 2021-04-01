@@ -7,6 +7,7 @@ using TestMessageHub.Converters;
 using TestMessageHub.Mappings;
 using TestMessageHub.Models;
 using TestMessageHub.Models.Const;
+using TestMessageHub.Models.DTO;
 
 namespace TestMessageHub.Tests
 {
@@ -32,7 +33,7 @@ namespace TestMessageHub.Tests
         [TestMethod]
         public void FromAdidasMessageToDBMessageEntity()
         {
-            var message = new AdidasMessage()
+            var message = new AdidasMessageDTO()
             {
                 From = Companies.Adidas,
                 Header = Guid.NewGuid().ToString(),
@@ -50,7 +51,7 @@ namespace TestMessageHub.Tests
         [TestMethod]
         public void FromNikeMessageToDBMessageEntity()
         {
-            var message = new NikeMessage()
+            var message = new NikeMessageDTO()
             {
                 From = Companies.Nike,
                 Caption = Guid.NewGuid().ToString(),
@@ -68,7 +69,7 @@ namespace TestMessageHub.Tests
         [TestMethod]
         public void FromPumaMessageToDBMessageEntity()
         {
-            var message = new PumaMessage()
+            var message = new PumaMessageDTO()
             {
                 From = Companies.Puma,
                 Title = Guid.NewGuid().ToString(),
@@ -151,7 +152,7 @@ namespace TestMessageHub.Tests
                 }
             };
 
-            var adidasMessage = _messageConverter.PrepareCompanyMessages<AdidasMessage>(messages)
+            var adidasMessage = _messageConverter.PrepareCompanyMessages<AdidasMessageDTO>(messages)
                 .FirstOrDefault();
 
             var inputMessage = messages.Single();
@@ -176,7 +177,7 @@ namespace TestMessageHub.Tests
                 }
             };
 
-            var nikeMessage = _messageConverter.PrepareCompanyMessages<NikeMessage>(messages)
+            var nikeMessage = _messageConverter.PrepareCompanyMessages<NikeMessageDTO>(messages)
                 .FirstOrDefault();
 
             var inputMessage = messages.Single();
@@ -201,7 +202,7 @@ namespace TestMessageHub.Tests
                 }
             };
 
-            var pumaMessage = _messageConverter.PrepareCompanyMessages<PumaMessage>(messages)
+            var pumaMessage = _messageConverter.PrepareCompanyMessages<PumaMessageDTO>(messages)
                 .FirstOrDefault();
 
             var inputMessage = messages.Single();
@@ -240,7 +241,7 @@ namespace TestMessageHub.Tests
                 },
             };
 
-            var pumaMessages = _messageConverter.PrepareCompanyMessages<PumaMessage>(messages);
+            var pumaMessages = _messageConverter.PrepareCompanyMessages<PumaMessageDTO>(messages);
 
             Assert.AreEqual(3, pumaMessages.Count);
             Assert.IsFalse(pumaMessages.Any(message => string.IsNullOrEmpty(message.Title)));
