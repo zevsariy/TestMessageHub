@@ -6,10 +6,12 @@ using TestMessageHub.Converters;
 using TestMessageHub.Interfaces;
 using TestMessageHub.Models;
 using TestMessageHub.Models.Const;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TestMessageHub.Controllers
 {
     [ApiController]
+    [Produces(Application.Json)]
     [Route("[controller]")]
     public class MessagesController : ControllerBase
     {
@@ -25,6 +27,16 @@ namespace TestMessageHub.Controllers
             _DBMessagesService = DBMessagesService;
         }
 
+        /// <summary>
+        /// Get messages for company and date range with messages status check
+        /// </summary>
+        /// <param name="companyName">Company name</param>
+        /// <param name="fromDate">Start date range</param>
+        /// <param name="toDate">End date range</param>
+        /// <param name="read">Message read status</param>
+        /// <response code="200">Request processed successfully</response>
+		/// <response code="400">Bad request received. Additional info will be in a body</response>
+        /// <returns>List of messages, converted for company messages format</returns>
         [HttpGet]
         public async Task<ActionResult> GetMessagesForCompanyByNameAndDateTimeRange(
             [FromQuery] string companyName,
@@ -43,6 +55,13 @@ namespace TestMessageHub.Controllers
             };
         }
 
+        /// <summary>
+        /// Send message and save it to DB
+        /// </summary>
+        /// <param name="message">Message from company. Type of message will be detected by JSONConverter.</param>
+        /// <response code="200">Request processed successfully</response>
+		/// <response code="400">Bad request received. Additional info will be in a body</response>
+        /// <returns>Ok result</returns>
         [HttpPost]
         public async Task<ActionResult> SendMessage(
             [FromBody] MessageBase message)

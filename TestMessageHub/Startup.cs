@@ -73,6 +73,7 @@ namespace TestMessageHub
                         Url = new Uri("https://github.com/zevsariy"),
                     }
                 });
+                c.UseOneOfForPolymorphism();
             });
         }
 
