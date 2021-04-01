@@ -40,6 +40,7 @@ namespace TestMessageHub
                         o.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Include;
                         o.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                         o.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                        o.SerializerSettings.DateFormatString = "yyyy-MM-ddTHH:mm:ss.fffZ";
                     }
                 )
                 .AddControllersAsServices()

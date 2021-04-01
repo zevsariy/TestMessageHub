@@ -27,8 +27,14 @@ namespace TestMessageHub.Services
             DateTime? toDate,
             bool? read)
         {
-            if (fromDate == null) fromDate = DateTime.UtcNow.AddDays(-7);
-            if (toDate == null) toDate = DateTime.UtcNow;
+            // prepare date from and date to if one or both dates is null
+            if (!fromDate.HasValue && !toDate.HasValue)
+            {
+                fromDate = DateTime.UtcNow.AddDays(-7);
+                toDate = DateTime.UtcNow;
+            }
+            if (!fromDate.HasValue) fromDate = toDate.Value.AddDays(-1);
+            if (!toDate.HasValue) toDate = fromDate.Value.AddDays(1);
 
             using ApplicationContext db = new ApplicationContext();
 
