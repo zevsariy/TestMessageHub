@@ -38,21 +38,22 @@ namespace TestMessageHub.Services
 
             using ApplicationContext db = new ApplicationContext();
 
-            if (read == null)
+            if (read.HasValue)
             {
                 var query = db.Messages.Where(
                     (message) => message.To == companyName
                     && (message.SendDate >= fromDate && message.SendDate <= toDate)
+                    && message.Read == read
                 );
                 var messages = await query.ToListAsync();
                 return messages;
+                
             }
             else
             {
                 var query = db.Messages.Where(
                     (message) => message.To == companyName
                     && (message.SendDate >= fromDate && message.SendDate <= toDate)
-                    && message.Read == read
                 );
                 var messages = await query.ToListAsync();
                 return messages;
